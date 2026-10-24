@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>NPTEL Java Exam Simulator - Complete Question Bank</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+    :root {
+      --bg: #090d16;
+      --surface: #111827;
+      --surface-card: #151f30;
+      --surface-border: #1e293b;
+      --surface-hover: #1c2a42;
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --primary-glow: rgba(99, 102, 241, 0.25);
+      --accent: #06b6d4;
+      --accent-glow: rgba(6, 182, 212, 0.2);
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.12);
+      --success-border: #059669;
+      --danger: #ef4444;
+      --danger-bg: rgba(239, 68, 68, 0.12);
+      --danger-border: #dc2626;
+      --warning: #f59e0b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'Fira Code', Consolas, Monaco, monospace;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.6;
+      padding-bottom: 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 14px;
+    }
+
+    /* Sticky Header */
+    header {
+      background: rgba(11, 16, 27, 0.95);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--surface-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 10px 0;
+      width: 100%;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .logo-group {
+      min-width: 0;
+    }
+
+    .logo-group h1 {
+      font-size: 1.18rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #a5b4fc 0%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .logo-group p {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    /* Stats bar */
+    .header-stats {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      flex-shrink: 0;
+    }
+
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      white-space: nowrap;
+    }
+
+    .stat-val {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-correct { color: var(--success); }
+    .stat-accuracy { color: var(--accent); }
+
+    .btn-reset {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 0.72rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.2s;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .btn-reset:hover {
+      color: var(--danger);
+      background: var(--danger-bg);
+    }
+
+    /* Controls Bar */
+    .controls-bar {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+
+    /* Mode Tabs (Scrollable) */
+    .mode-tabs-wrapper {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 2px;
+    }
+    .mode-tabs-wrapper::-webkit-scrollbar {
+      height: 3px;
+    }
+    .mode-tabs-wrapper::-webkit-scrollbar-thumb {
+      background: var(--surface-border);
+      border-radius: 3px;
+    }
+
+    .mode-tabs {
+      display: inline-flex;
+      gap: 4px;
+      background: var(--surface);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--surface-border);
+      white-space: nowrap;
+    }
+
+    .mode-tab {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.78rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .mode-tab.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 8px var(--primary-glow);
+    }
+
+    .mode-tab:hover:not(.active) {
+      color: var(--text);
+      background: var(--surface-hover);
+    }
+
+    /* Filters: Weeks & Search */
+    .filter-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .week-pills-wrapper {
+      flex: 1;
+      min-width: 0;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 2px;
+    }
+    .week-pills-wrapper::-webkit-scrollbar {
+      height: 3px;
+    }
+    .week-pills-wrapper::-webkit-scrollbar-thumb {
+      background: var(--surface-border);
+      border-radius: 3px;
+    }
+
+    .week-pills {
+      display: flex;
+      gap: 5px;
+      white-space: nowrap;
+    }
+
+    .week-btn {
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--surface-border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      flex-shrink: 0;
+    }
+
+    .week-btn.active {
+      background: var(--accent);
+      color: #090d16;
+      border-color: var(--accent);
+      font-weight: 700;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .week-btn:hover:not(.active) {
+      border-color: var(--text-dim);
+      color: var(--text);
+    }
+
+    .search-box-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .search-input {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      color: var(--text);
+      font-size: 0.78rem;
+      width: 200px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 6px var(--primary-glow);
+      width: 220px;
+    }
+
+    /* Section Summary Banner */
+    .section-summary {
+      margin-top: 14px;
+      padding: 8px 12px;
+      background: #0d1524;
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      width: 100%;
+    }
+
+    .section-summary strong {
+      color: #fff;
+    }
+
+    .section-summary .progress-badge {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--primary-light);
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-weight: 600;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      white-space: nowrap;
+    }
+
+    /* Questions List */
+    .questions-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 14px;
+      width: 100%;
+      min-width: 0;
+    }
+
+    /* Question Card */
+    .q-card {
+      background: var(--surface-card);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+      position: relative;
+      transition: border-color 0.2s;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      overflow-x: hidden;
+    }
+
+    .q-card:hover {
+      border-color: #2e3e5c;
+    }
+
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .meta-badges {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 5px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+    }
+
+    .badge-week {
+      background: rgba(99, 102, 241, 0.15);
+      color: var(--primary-light);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+    }
+
+    .badge-type {
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--accent);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .badge-answered-correct {
+      background: var(--success-bg);
+      color: var(--success);
+      border: 1px solid var(--success-border);
+    }
+
+    .badge-answered-incorrect {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
+    }
+
+    .q-id {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+
+    .q-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .q-statement {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      white-space: pre-line;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .test-cases-box {
+      background: #0a0f1a;
+      border: 1px dashed #26354e;
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 14px;
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      color: #38bdf8;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: pre-wrap;
+      word-break: break-word;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .test-cases-box strong {
+      color: #f1f5f9;
+      font-family: var(--font-sans);
+    }
+
+    /* Template Code Box */
+    .template-box {
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .template-header {
+      background: #0f172a;
+      padding: 5px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-bottom: 1px solid #1e293b;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .code-view {
+      padding: 10px 12px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      white-space: pre;
+      line-height: 1.45;
+      color: #cbd5e1;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .placeholder-highlight {
+      background: rgba(245, 158, 11, 0.22);
+      color: #fbbf24;
+      padding: 2px 5px;
+      border-radius: 4px;
+      border: 1px dashed #f59e0b;
+      font-weight: 600;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    /* MCQ Prompt */
+    .mcq-prompt {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      word-break: break-word;
+    }
+
+    /* Options Grid */
+    .options-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .option-card {
+      background: var(--surface);
+      border: 1.5px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      cursor: pointer;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      transition: all 0.15s ease;
+      position: relative;
+      user-select: none;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .option-card:hover:not(.locked) {
+      border-color: var(--primary-light);
+      background: var(--surface-hover);
+    }
+
+    .option-letter {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: all 0.2s;
+      margin-top: 2px;
+    }
+
+    .option-content {
+      flex: 1;
+      min-width: 0;
+      max-width: 100%;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #e2e8f0;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Selection States */
+    .option-card.correct {
+      background: var(--success-bg) !important;
+      border-color: var(--success-border) !important;
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+    }
+    .option-card.correct .option-letter {
+      background: var(--success);
+      color: #090d16;
+    }
+
+    .option-card.incorrect {
+      background: var(--danger-bg) !important;
+      border-color: var(--danger-border) !important;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+    }
+    .option-card.incorrect .option-letter {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .option-card.correct-target {
+      border-color: var(--success-border) !important;
+      background: rgba(16, 185, 129, 0.08) !important;
+    }
+    .option-card.correct-target .option-letter {
+      background: var(--success);
+      color: #090d16;
+    }
+
+    .status-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+    .status-badge.correct {
+      background: var(--success);
+      color: #064e3b;
+    }
+    .status-badge.incorrect {
+      background: var(--danger);
+      color: #fff;
+    }
+    .status-badge.target {
+      background: var(--success);
+      color: #064e3b;
+    }
+
+    /* Feedback & Explanation Box */
+    .feedback-box {
+      background: #0c1422;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 12px;
+      animation: fadeIn 0.2s ease-out;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feedback-header {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      word-break: break-word;
+    }
+
+    .feedback-header.correct { color: var(--success); }
+    .feedback-header.incorrect { color: var(--danger); }
+
+    .explanation-text {
+      font-size: 0.8rem;
+      color: #cbd5e1;
+      line-height: 1.5;
+      white-space: pre-line;
+      word-break: break-word;
+    }
+
+    /* Details Accordion */
+    .details-accordion {
+      margin-top: 10px;
+      border-top: 1px solid #1e293b;
+      padding-top: 8px;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .accordion-toggle {
+      background: none;
+      border: none;
+      color: var(--accent);
+      font-weight: 600;
+      font-size: 0.74rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 0;
+      word-break: break-word;
+    }
+
+    .accordion-content {
+      display: none;
+      margin-top: 8px;
+      background: #090d16;
+      border: 1px solid #1e293b;
+      border-radius: 6px;
+      padding: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      white-space: pre;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .copy-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Floating Back-to-Top Button */
+    .btn-top {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4);
+      font-size: 1rem;
+      transition: all 0.2s;
+      z-index: 90;
+      opacity: 0.85;
+    }
+    .btn-top:hover {
+      background: var(--primary);
+      color: #fff;
+      transform: translateY(-2px);
+      opacity: 1;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 40px 16px;
+      color: var(--text-dim);
+      background: var(--surface-card);
+      border-radius: 10px;
+      border: 1px solid var(--surface-border);
+      margin-top: 14px;
+    }
+
+    /* ============================================================== */
+    /* RESPONSIVE BREAKPOINTS (Mobile & Small Screens down to 320px)  */
+    /* ============================================================== */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 10px;
+      }
+      header {
+        padding: 8px 0;
+      }
+      .header-inner {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .logo-group {
+        text-align: center;
+      }
+      .logo-group h1 {
+        justify-content: center;
+        font-size: 1.05rem;
+      }
+      .logo-group p {
+        font-size: 0.7rem;
+      }
+      .header-stats {
+        width: 100%;
+        justify-content: space-between;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-size: 0.72rem;
+      }
+      .stat-pill {
+        gap: 3px;
+      }
+      .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+      }
+      .search-box-wrapper {
+        width: 100%;
+      }
+      .search-input {
+        width: 100% !important;
+      }
+      .section-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding: 8px 10px;
+      }
+      .q-card {
+        padding: 14px 10px;
+        border-radius: 10px;
+      }
+      .q-title {
+        font-size: 0.98rem;
+      }
+      .q-statement {
+        font-size: 0.84rem;
+      }
+      .option-card {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+      .option-letter {
+        width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+      }
+      .option-content {
+        font-size: 0.74rem;
+      }
+      .code-view {
+        font-size: 0.72rem;
+        padding: 8px 10px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .logo-group h1 {
+        font-size: 0.95rem;
+      }
+      .header-stats {
+        font-size: 0.68rem;
+        padding: 4px 6px;
+      }
+      .btn-reset {
+        font-size: 0.66rem;
+      }
+      .q-card {
+        padding: 12px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Header -->
+  <header>
+    <div class="container header-inner">
+      <div class="logo-group">
+        <h1>☕ NPTEL Java Exam Simulator</h1>
+        <p>Complete 12-Week Practice Portal & Interactive Code-Completion Bank</p>
+      </div>
+      <div class="header-stats">
+        <div class="stat-pill">Attempted: <span id="stat-attempted" class="stat-val">0</span></div>
+        <div class="stat-pill">Correct: <span id="stat-correct" class="stat-val stat-correct">0</span></div>
+        <div class="stat-pill">Accuracy: <span id="stat-accuracy" class="stat-val stat-accuracy">0%</span></div>
+        <button class="btn-reset" onclick="resetAllAnswers()" title="Reset saved answers">↺ Reset</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Controls Bar -->
+    <div class="controls-bar">
+      <!-- Mode Tabs -->
+      <div class="mode-tabs-wrapper">
+        <div class="mode-tabs">
+          <button class="mode-tab active" data-mode="prog" onclick="setMode('prog')">
+            ⚡ Programming Code MCQs (60)
+          </button>
+          <button class="mode-tab" data-mode="quiz" onclick="setMode('quiz')">
+            📖 Theory Quiz MCQs (120)
+          </button>
+          <button class="mode-tab" data-mode="all" onclick="setMode('all')">
+            🎯 All Questions (180)
+          </button>
+        </div>
+      </div>
+
+      <!-- Filters Row: Weeks & Search -->
+      <div class="filter-row">
+        <div class="week-pills-wrapper">
+          <div class="week-pills" id="week-pills-container">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+        <div class="search-box-wrapper">
+          <input type="text" id="search-input" class="search-input" placeholder="🔍 Search topics or code..." oninput="onSearch()">
+        </div>
+      </div>
+    </div>
+
+    <!-- Section Summary Bar -->
+    <div class="section-summary" id="section-summary">
+      <!-- Dynamically filled by JS -->
+    </div>
+
+    <!-- All Questions in this section rendered here -->
+    <div class="questions-list" id="questions-list">
+      <!-- Dynamic Question Cards -->
+    </div>
+  </main>
+
+  <!-- Floating Scroll To Top Button -->
+  <button class="btn-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Back to top">↑</button>
+
+  <!-- Load Questions Dataset -->
+  <script src="data.js"></script>
+
+  <!-- App Logic -->
+  <script>
+    // State management
+    const STORAGE_KEY_ANSWERS = 'nptel_java_user_answers';
+    const STORAGE_KEY_STATS = 'nptel_java_quiz_stats';
+
+    // Check if the current page load is a user refresh (F5 / Reload button).
+    // As requested: answers are stored until the user refreshes the page.
+    function checkPageReload() {
+      let isReload = false;
+      try {
+        if (typeof window !== 'undefined' && window.performance) {
+          const navEntries = window.performance.getEntriesByType ? window.performance.getEntriesByType('navigation') : null;
+          if (navEntries && navEntries.length > 0) {
+            isReload = (navEntries[0].type === 'reload');
+          } else if (window.performance.navigation) {
+            isReload = (window.performance.navigation.type === 1);
+          }
+        }
+      } catch (e) {}
+      if (isReload) {
+        try {
+          localStorage.removeItem(STORAGE_KEY_ANSWERS);
+          localStorage.removeItem(STORAGE_KEY_STATS);
+        } catch (e) {}
+      }
+    }
+
+    checkPageReload();
+
+    let currentMode = 'prog'; // 'prog' | 'quiz' | 'all'
+    let currentWeek = 'all';  // 'all' | 1..12
+    let searchQuery = '';
+    let userAnswers = {};     // { [questionId]: selectedOptionIndex }
+    let stats = { attempted: 0, correct: 0 };
+
+    // Load persisted state from localStorage
+    function loadState() {
+      try {
+        const savedAns = localStorage.getItem(STORAGE_KEY_ANSWERS);
+        if (savedAns) userAnswers = JSON.parse(savedAns);
+        const savedStats = localStorage.getItem(STORAGE_KEY_STATS);
+        if (savedStats) stats = JSON.parse(savedStats);
+      } catch (e) {
+        console.warn('LocalStorage error on load', e);
+      }
+      updateStatsDisplay();
+    }
+
+    // Save state to localStorage
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY_ANSWERS, JSON.stringify(userAnswers));
+        localStorage.setItem(STORAGE_KEY_STATS, JSON.stringify(stats));
+      } catch (e) {
+        console.warn('LocalStorage error on save', e);
+      }
+    }
+
+    // Initialize application
+    function init() {
+      loadState();
+      buildWeekPills();
+      renderAllQuestions();
+    }
+
+    // Build week pills W1..W12
+    function buildWeekPills() {
+      const container = document.getElementById('week-pills-container');
+      let html = `<button class="week-btn ${currentWeek === 'all' ? 'active' : ''}" data-week="all" onclick="setWeek('all')">All Weeks</button>`;
+      for (let w = 1; w <= 12; w++) {
+        html += `<button class="week-btn ${currentWeek == w ? 'active' : ''}" data-week="${w}" onclick="setWeek(${w})">Week ${w}</button>`;
+      }
+      container.innerHTML = html;
+    }
+
+    function setMode(mode) {
+      currentMode = mode;
+      document.querySelectorAll('.mode-tab').forEach(t => {
+        t.classList.toggle('active', t.getAttribute('data-mode') === mode);
+      });
+      renderAllQuestions();
+    }
+
+    function setWeek(w) {
+      currentWeek = w;
+      document.querySelectorAll('.week-btn').forEach(btn => {
+        const val = btn.getAttribute('data-week');
+        btn.classList.toggle('active', val == w);
+      });
+      renderAllQuestions();
+    }
+
+    function onSearch() {
+      searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+      renderAllQuestions();
+    }
+
+    // Filter questions based on currentMode, currentWeek, and searchQuery
+    function getFilteredQuestions() {
+      let pool = [];
+      if (currentMode === 'prog') {
+        pool = window.PROG_DATA || [];
+      } else if (currentMode === 'quiz') {
+        pool = window.QUIZ_DATA || [];
+      } else {
+        pool = [...(window.PROG_DATA || []), ...(window.QUIZ_DATA || [])];
+      }
+
+      if (currentWeek !== 'all') {
+        pool = pool.filter(q => q.week == currentWeek);
+      }
+
+      if (searchQuery) {
+        pool = pool.filter(q => {
+          const text = (q.title || '') + ' ' + (q.problem || '') + ' ' + (q.question || '') + ' ' + (q.explanation || '') + ' ' + (q.options ? q.options.join(' ') : '');
+          return text.toLowerCase().includes(searchQuery);
+        });
+      }
+
+      return pool;
+    }
+
+    // Render ALL questions in the current section
+    function renderAllQuestions() {
+      const questionsListEl = document.getElementById('questions-list');
+      const summaryEl = document.getElementById('section-summary');
+      const questions = getFilteredQuestions();
+
+      // Count answered in this specific filtered set
+      let answeredCount = 0;
+      let correctCount = 0;
+      questions.forEach(q => {
+        if (userAnswers[q.id] !== undefined) {
+          answeredCount++;
+          if (userAnswers[q.id] === q.correctIndex) correctCount++;
+        }
+      });
+
+      // Update Section Summary Banner
+      let modeLabel = currentMode === 'prog' ? '⚡ Programming Code-Completion' : (currentMode === 'quiz' ? '📖 Theory Quiz' : '🎯 All Questions');
+      let weekLabel = currentWeek === 'all' ? 'All 12 Weeks' : 'Week ' + currentWeek;
+      summaryEl.innerHTML = `
+        <div>
+          <strong>${modeLabel}</strong> &bull; <span>${weekLabel}</span> &bull; <span>${questions.length} Questions</span>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <span class="progress-badge">${answeredCount} / ${questions.length} Answered</span>
+          ${answeredCount > 0 ? `<span style="color:var(--success); font-weight:700;">${correctCount} Correct</span>` : ''}
+        </div>
+      `;
+
+      if (questions.length === 0) {
+        questionsListEl.innerHTML = `
+          <div class="empty-state">
+            <h3>No questions found matching your filter criteria.</h3>
+            <p>Try switching to "All Weeks" or clearing the search query.</p>
+          </div>
+        `;
+        return;
+      }
+
+      const letters = ['A', 'B', 'C', 'D', 'E'];
+
+      let fullHtml = '';
+      questions.forEach((q, idx) => {
+        const isProg = (q.category !== 'Theory Quiz MCQ' && q.templateCode !== undefined);
+        const isAnswered = (userAnswers[q.id] !== undefined);
+        const selectedIdx = userAnswers[q.id];
+        const isCorrect = (selectedIdx === q.correctIndex);
+
+        let answerBadge = '';
+        if (isAnswered) {
+          answerBadge = isCorrect
+            ? '<span class="badge badge-answered-correct">✔ Correct</span>'
+            : '<span class="badge badge-answered-incorrect">✖ Incorrect</span>';
+        }
+
+        // Test Cases Box
+        let testCaseHtml = '';
+        if (q.testCase) {
+          testCaseHtml = `
+            <div class="test-cases-box">
+              <strong>Sample Test Cases:</strong><br>${escapeHtml(q.testCase)}
+            </div>
+          `;
+        }
+
+        // Template Skeleton (with placeholder highlighted)
+        let templateHtml = '';
+        if (isProg && q.templateCode) {
+          const highlighted = escapeHtml(q.templateCode).replace(
+            /\/\* &gt;&gt;&gt; \[.*?\] &lt;&lt;&lt; \*\//g,
+            '<span class="placeholder-highlight">/* >>> [PUT YOUR CODE BELOW] <<< */</span>'
+          );
+          templateHtml = `
+            <div class="template-box">
+              <div class="template-header">
+                <span>📋 Pre-written Boilerplate Skeleton (Swayam Portal)</span>
+                <span>Java 1.8+</span>
+              </div>
+              <div class="code-view">${highlighted}</div>
+            </div>
+          `;
+        }
+
+        // Options Grid
+        let optionsHtml = '<div class="options-grid">';
+        (q.options || []).forEach((opt, optIdx) => {
+          let cardClass = 'option-card';
+          let badgeHtml = '';
+          if (isAnswered) {
+            cardClass += ' locked';
+            if (optIdx === q.correctIndex && optIdx === selectedIdx) {
+              cardClass += ' correct';
+              badgeHtml = '<span class="status-badge correct">✔ Correct</span>';
+            } else if (optIdx === selectedIdx && optIdx !== q.correctIndex) {
+              cardClass += ' incorrect';
+              badgeHtml = '<span class="status-badge incorrect">✖ Incorrect</span>';
+            } else if (optIdx === q.correctIndex && selectedIdx !== q.correctIndex) {
+              cardClass += ' correct-target';
+              badgeHtml = '<span class="status-badge target">✔ Correct Answer</span>';
+            }
+          }
+
+          optionsHtml += `
+            <div class="${cardClass}" onclick="selectOption('${q.id}', ${optIdx})">
+              <div class="option-letter">${letters[optIdx]}</div>
+              <div class="option-content">${escapeHtml(opt)}</div>
+              ${badgeHtml}
+            </div>
+          `;
+        });
+        optionsHtml += '</div>';
+
+        // Feedback & Explanation
+        let feedbackDisplay = isAnswered ? 'block' : 'none';
+        let feedbackHeaderClass = isCorrect ? 'correct' : 'incorrect';
+        let feedbackHeaderText = isCorrect ? 'Correct Answer!' : 'Incorrect Selection (Correct answer highlighted above)';
+        let feedbackIcon = isCorrect ? '✔' : '✖';
+
+        let detailsHtml = '';
+        if (isProg && q.fullCode) {
+          detailsHtml = `
+            <div class="details-accordion">
+              <button class="accordion-toggle" onclick="toggleDetails('fullcode-${q.id}')">
+                <span>▶</span> View Complete Working Java Program
+              </button>
+              <div class="accordion-content" id="fullcode-${q.id}">
+                <button class="copy-btn" onclick="copyToClipboard('${q.id}')">Copy Code</button>
+                <div id="raw-code-${q.id}">${escapeHtml(q.fullCode)}</div>
+              </div>
+            </div>
+          `;
+        }
+
+        fullHtml += `
+          <div class="q-card" id="card-${q.id}">
+            <div class="q-meta">
+              <div class="meta-badges">
+                <span class="badge badge-week">Week ${q.week}</span>
+                <span class="badge badge-type">${isProg ? 'Code Completion' : 'Theory Quiz'}</span>
+                ${answerBadge}
+              </div>
+              <div class="q-id">Q${idx + 1} &bull; ${q.id}</div>
+            </div>
+
+            <h2 class="q-title">${q.title ? escapeHtml(q.title) : 'Question ' + q.num}</h2>
+            <div class="q-statement">${formatStatement(q.problem || q.question)}</div>
+
+            ${testCaseHtml}
+            ${templateHtml}
+
+            <div class="mcq-prompt">
+              <span>🎯</span>
+              ${isProg ? 'Which code snippet should replace the comment to complete the program?' : 'Select the correct option:'}
+            </div>
+
+            ${optionsHtml}
+
+            <!-- Feedback & Explanation Box -->
+            <div class="feedback-box" id="feedback-${q.id}" style="display: ${feedbackDisplay}">
+              <div class="feedback-header ${feedbackHeaderClass}">
+                <span>${feedbackIcon}</span> ${feedbackHeaderText}
+              </div>
+              <div class="explanation-text">
+                <strong>Technical Explanation:</strong><br>${escapeHtml(q.explanation || 'No explanation provided.')}
+              </div>
+              ${detailsHtml}
+            </div>
+          </div>
+        `;
+      });
+
+      questionsListEl.innerHTML = fullHtml;
+    }
+
+    // Update Section Summary counts
+    function updateSectionSummary() {
+      const summaryEl = document.getElementById('section-summary');
+      if (!summaryEl) return;
+      const questions = getFilteredQuestions();
+      let answeredCount = 0;
+      let correctCount = 0;
+      questions.forEach(q => {
+        if (userAnswers[q.id] !== undefined) {
+          answeredCount++;
+          if (userAnswers[q.id] === q.correctIndex) correctCount++;
+        }
+      });
+      let modeLabel = currentMode === 'prog' ? '⚡ Programming Code-Completion' : (currentMode === 'quiz' ? '📖 Theory Quiz' : '🎯 All Questions');
+      let weekLabel = currentWeek === 'all' ? 'All 12 Weeks' : 'Week ' + currentWeek;
+      summaryEl.innerHTML = `
+        <div>
+          <strong>${modeLabel}</strong> &bull; <span>${weekLabel}</span> &bull; <span>${questions.length} Questions</span>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <span class="progress-badge">${answeredCount} / ${questions.length} Answered</span>
+          ${answeredCount > 0 ? `<span style="color:var(--success); font-weight:700;">${correctCount} Correct</span>` : ''}
+        </div>
+      `;
+    }
+
+    // Select Option for a specific question (updates card in-place with zero scroll jump)
+    function selectOption(qId, optIdx) {
+      if (userAnswers[qId] !== undefined) return; // already answered
+
+      // Find question object
+      const allQs = [...(window.PROG_DATA || []), ...(window.QUIZ_DATA || [])];
+      const q = allQs.find(item => item.id === qId);
+      if (!q) return;
+
+      userAnswers[qId] = optIdx;
+      stats.attempted++;
+      const isCorrect = (optIdx === q.correctIndex);
+      if (isCorrect) {
+        stats.correct++;
+      }
+
+      saveState();
+      updateStatsDisplay();
+      updateSectionSummary();
+
+      // Smooth in-place card update
+      const cardEl = document.getElementById('card-' + qId);
+      if (cardEl) {
+        const optionCards = cardEl.querySelectorAll('.option-card');
+        optionCards.forEach((card, idx) => {
+          card.classList.add('locked');
+          if (idx === optIdx) {
+            if (isCorrect) {
+              card.classList.add('correct');
+              card.insertAdjacentHTML('beforeend', '<span class="status-badge correct">✔ Correct</span>');
+            } else {
+              card.classList.add('incorrect');
+              card.insertAdjacentHTML('beforeend', '<span class="status-badge incorrect">✖ Incorrect</span>');
+            }
+          } else if (idx === q.correctIndex && !isCorrect) {
+            card.classList.add('correct-target');
+            card.insertAdjacentHTML('beforeend', '<span class="status-badge target">✔ Correct Answer</span>');
+          }
+        });
+
+        const metaBadges = cardEl.querySelector('.meta-badges');
+        if (metaBadges) {
+          const badgeHtml = isCorrect
+            ? '<span class="badge badge-answered-correct">✔ Correct</span>'
+            : '<span class="badge badge-answered-incorrect">✖ Incorrect</span>';
+          metaBadges.insertAdjacentHTML('beforeend', badgeHtml);
+        }
+
+        const feedbackBox = document.getElementById('feedback-' + qId);
+        if (feedbackBox) {
+          const headerEl = feedbackBox.querySelector('.feedback-header');
+          if (headerEl) {
+            headerEl.className = 'feedback-header ' + (isCorrect ? 'correct' : 'incorrect');
+            headerEl.innerHTML = `<span>${isCorrect ? '✔' : '✖'}</span> ${isCorrect ? 'Correct Answer!' : 'Incorrect Selection (Correct answer highlighted above)'}`;
+          }
+          feedbackBox.style.display = 'block';
+        }
+      }
+    }
+
+    function updateStatsDisplay() {
+      document.getElementById('stat-attempted').innerText = stats.attempted;
+      document.getElementById('stat-correct').innerText = stats.correct;
+      const acc = stats.attempted > 0 ? Math.round((stats.correct / stats.attempted) * 100) : 0;
+      document.getElementById('stat-accuracy').innerText = acc + '%';
+    }
+
+    function resetAllAnswers() {
+      if (confirm('Reset all answered questions and clear your session score?')) {
+        stats = { attempted: 0, correct: 0 };
+        userAnswers = {};
+        try {
+          localStorage.removeItem(STORAGE_KEY_ANSWERS);
+          localStorage.removeItem(STORAGE_KEY_STATS);
+        } catch (e) {}
+        updateStatsDisplay();
+        renderAllQuestions();
+      }
+    }
+
+    function toggleDetails(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        const isOpen = (el.style.display === 'block');
+        el.style.display = isOpen ? 'none' : 'block';
+      }
+    }
+
+    function copyToClipboard(id) {
+      const el = document.getElementById('raw-code-' + id);
+      if (el) {
+        navigator.clipboard.writeText(el.innerText).then(() => {
+          alert('Full code copied to clipboard!');
+        });
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function formatStatement(str) {
+      if (!str) return '';
+      let escaped = escapeHtml(str);
+      escaped = escaped.replace(/`([^`]+)`/g, '<code style="background:#1e293b; color:#38bdf8; padding:2px 5px; border-radius:4px; font-family:var(--font-mono); font-size:0.85em;">$1</code>');
+      return escaped;
+    }
+
+    window.onload = init;
+  </script>
+</body>
+</html>
